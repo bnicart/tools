@@ -1,0 +1,83 @@
+#!/bin/sh
+
+create_module () {
+  echo "Creating module $1 ..."
+  echo "angular
+  .module('$2', [])" > $1".js"
+}
+
+create_controller () {
+  echo "Creating controller $3 ..."
+  echo "angular
+  .module('$2')
+  .controller('$3', $3)
+
+  $3.\$inject = [];
+  
+  function $3() {
+  
+  }
+  " > $1".js"
+}
+create_service () {
+  echo "Creating service $1 ..."
+  echo "angular
+  .module('$2')
+  .factory('$3', $3)
+  
+  function $3() {
+    return {
+
+    };
+  }
+  " > $1".js"
+}
+create_directive () {
+  echo "Creating directive $1 ..."
+  echo "angular
+  .module('$2')
+  .directive('$3', $3)
+
+  $3.\$inject = [];
+
+  function $3() {
+    return {
+      restrict: 'AE',
+      template: '',
+      link: function(scope, elem, attrs) {
+      }
+    };
+  }
+  " > $1".js"
+}
+
+
+if [ "$1" = "module" ]; then
+  # $2 - module filename
+  # $3 - module name
+  create_module $2 $3
+fi
+
+if [ "$1" = "controller" ]; then
+  # $2 - controller filename
+  # $3 - controller module name
+  # $4 - controller name
+  create_controller $2 $3 $4
+fi
+
+if [ "$1" = "service" ]; then
+  # $2 - service filename
+  # $3 - service module name
+  # $4 - service name
+  create_service $2 $3 $4
+fi
+
+if [ "$1" = "directive" ]; then
+  # $2 - directive filename
+  # $3 - directive module name
+  # $4 - directive name
+  create_directive $2 $3 $4
+fi
+
+
+
